@@ -1,21 +1,23 @@
-
-
 import sys
 from operations.functions import parse_input
 from operations.commands import (AddressBook, add_contact, change_contact, delete_contact, show_phone, add_birthday,
                                  show_birthday, birthdays)
+from serial.work_with_file import save_data, load_data
 
 
 def main():
-    book = AddressBook()
+    book = load_data()
     print("Welcome to the assistant bot! Click the 'help' button to learn about all the commands.")
+
     while True:
         print("Commands list - help, close, exit, add, change, delete, phone, all, add-birthday, show-birthday "
               "and birthdays")
         user_input = input("Enter a command: ")
         command, args = parse_input(user_input)
+
         if command in ["close", "exit"]:
             print("Bye!")
+            save_data(book)
             sys.exit(1)
         elif command == "hello":
             print("How can I help you? Please enter 'add' your name and number.")
@@ -37,7 +39,7 @@ def main():
         elif command == "phone":
             print(show_phone(args, book))
         elif command == "all":
-            print(f"Here's all contacts that you've added:\n{book}. Do you need to make any changes?")
+            print(f"Here's all contacts that you've added:\n{book}.\nDo you need to make any changes?")
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "show-birthday":
